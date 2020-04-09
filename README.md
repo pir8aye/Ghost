@@ -1,69 +1,95 @@
-<a href="https://github.com/TryGhost/Ghost"><img src="https://cloud.githubusercontent.com/assets/120485/18661790/cf942eda-7f17-11e6-9eb6-9c65bfc2abd8.png" alt="Ghost" /></a>
-<a href="https://travis-ci.org/TryGhost/Ghost"><img align="right" src="https://travis-ci.org/TryGhost/Ghost.svg?branch=master" alt="Build status" /></a>
-
-The project is maintained by a non-profit organisation called the **Ghost Foundation**, along with an amazing group of independent [contributors](https://github.com/TryGhost/Ghost/contributors). We're trying to make publishing software that changes the shape of online journalism.
-
-- [Ghost.org](https://ghost.org)
-- [Supported Node Versions](https://docs.ghost.org/v1/docs/supported-node-versions)
-- [Latest Release](https://ghost.org/developers/)
-- [Help & Support](http://help.ghost.org/)
-- [Theme Docs](http://themes.ghost.org/v1/)
-- [API Docs](https://api.ghost.org/)
-- [Contributing Guide](https://docs.ghost.org/v1/docs/contributing)
-- [Developer Blog](http://dev.ghost.org)
-- [Self-hoster Docs](http://docs.ghost.org/v1/)
-
-**NOTE: If you’re stuck, can’t get something working or need some help, please head on over and join our [forum](https://forum.ghost.org/) rather than opening an issue.**
+<p align="center">
+  <a href="https://ghost.org">
+    <img src="https://user-images.githubusercontent.com/120485/43974508-b64b2fe8-9cd2-11e8-8e58-707254b8817c.png" width="140px" alt="Ghost" />
+  </a>
+</p>
+<p align="center">
+    <a href="https://ghost.org">Ghost.org</a> |
+    <a href="https://ghost.org/features">Features</a> |
+    <a href="https://ghost.org/customers">Showcase</a> |
+    <a href="https://forum.ghost.org">Forum</a> |
+    <a href="https://ghost.org/docs/">Documentation</a> |
+    <a href="https://github.com/TryGhost/Ghost/blob/master/.github/CONTRIBUTING.md">Contributing</a> |
+    <a href="https://twitter.com/ghost">Twitter</a>
+    <br /><br />
+    <a href="https://ghost.org">
+        <img src="https://img.shields.io/badge/downloads-2M-brightgreen.svg" alt="Downloads" />
+    </a>
+    <a href="https://github.com/TryGhost/Ghost/releases/">
+        <img src="https://img.shields.io/github/release/TryGhost/Ghost.svg" alt="Latest release" />
+    </a>
+    <a href="https://github.com/TryGhost/Ghost/actions">
+        <img src="https://github.com/TryGhost/Ghost/workflows/Test%20Suite/badge.svg?branch=master" alt="Build status" />
+    </a>
+    <a href="https://github.com/TryGhost/Ghost/contributors/">
+        <img src="https://img.shields.io/github/contributors/TryGhost/Ghost.svg" alt="Contributors" />
+    </a>
+    <a href="https://opencollective.com/ghost">
+        <img src="https://opencollective.com/ghost/backers/badge.svg" alt="OpenCollective" />
+    </a>
+</p>
 
 &nbsp;
 
-![Ghost](https://user-images.githubusercontent.com/120485/28764244-344050c0-75d5-11e7-9314-45bc4177164e.png)
+<a href="https://ghost.org"><img src="https://user-images.githubusercontent.com/120485/66918181-f88fdc80-f048-11e9-8135-d9c0e7b35ebc.png" alt="Fiercely independent, professional publishing. Ghost is the most popular open source, headless Node.js CMS which already works with all the tools you know and love." /></a>
 
-&nbsp;
-
-# Hosting a live Ghost site
-
-<a href="https://ghost.org/pricing"><img src="https://cloud.githubusercontent.com/assets/120485/18662071/f30da886-7f18-11e6-90f2-42c0ade79fd1.png" alt="Ghost(Pro)" /></a>
+<a href="https://ghost.org/pricing"><img src="https://user-images.githubusercontent.com/120485/43995179-556d7620-9da1-11e8-8410-4b2ba48ea8d0.png" alt="Ghost(Pro)" width="165px" /></a>
 
 The easiest way to deploy Ghost is with our official **[Ghost(Pro)](https://ghost.org/pricing/)** managed service. You can have a fresh instance up and running in a couple of clicks with a worldwide CDN, backups, security and maintenance all done for you.
 
-Not only will it save you hours of maintenance per month, but all revenue goes to the Ghost Foundation, which funds the maintenance and further development of Ghost itself. So you’ll be supporting open source software *and* getting a great service **at the same time**! Talk about win/win. :trophy:
+Not only will it save you hours of maintenance per month, but all revenue goes to the Ghost Foundation, which funds the maintenance and further development of Ghost itself. So you’ll be supporting open source software *and* getting a great service! Alternatively if you'd like to support us, we're very grateful to all our backers on [Open Collective](https://opencollective.com/ghost) :heart:
 
-## Self-Hosters
+If you prefer to run on your own infrastructure, we also provide 1-off installs and managed support and maintenance plans via **[Ghost(Valet)](https://valet.ghost.org)** - which can save a substantial amount of developer time and resources.
 
-Other options are also available if you prefer playing around with servers by yourself, of course. The freedom of choice is in your hands.
+&nbsp;
 
-- [Self-hosting Guide](https://docs.ghost.org/v1/docs/getting-started-guide)
+# Quickstart Install
+
+If you want to run your own instance of Ghost, in most cases the best way is to use our **CLI tool**
+
+```
+$ npm install ghost-cli -g
+```
+
+&nbsp;
+
+Then, if installing locally add the `local` flag to get up and running in under a minute - [Local install docs](https://ghost.org/docs/install/local/)
+
+```
+$ ghost install local
+```
+
+&nbsp;
+
+or on a server run the full install, including automatic SSL setup using LetsEncrypt - [Production install docs](https://ghost.org/docs/install/ubuntu/)
+
+```
+$ ghost install
+```
+
+&nbsp;
+
+Check out our [official documentation](https://ghost.org/docs/) for more information about our [recommended hosting stack](https://ghost.org/docs/concepts/hosting/) & properly [upgrading Ghost](https://ghost.org/faq/upgrade-to-ghost-2-0/), plus everything you need to develop your own Ghost [themes](https://ghost.org/docs/api/handlebars-themes/) or work with [our API](https://ghost.org/docs/api/).
+
+&nbsp;
 
 
-# Theme Developers
+# Getting Help
 
-If you are developing a Ghost theme for your own site or creating themes for others to use we recommend installing Ghost on your own local machine. Luckily we have a brand new Ghost CLI to make this really easy 😄
+You can find answers to a huge variety of questions, along with a large community of helpful developers over on the [Ghost forum](https://forum.ghost.org/) - replies are generally very quick. **Ghost(Pro)** customers also have access to 24/7 email support.
 
-- [Installing Ghost via the CLI](https://docs.ghost.org/v1/docs/install-local)
-- [Theme Developer Docs](http://themes.ghost.org)
+To stay up to date with all the latest news and product updates, make sure you [subscribe to our blog](https://ghost.org/blog/) — or you can always follow us [on Twitter](https://twitter.com/Ghost), if you prefer your updates bite-sized and facetious. :saxophone::turtle:
+
+&nbsp;
 
 
 # Contributors & Advanced Developers
 
-For anyone wishing to contribute to Ghost or to hack/customise core files we recommend following our development setup guides:
-
-- [General Contributor Guide](https://docs.ghost.org/v1/docs/contributing)
-- [Developer Setup Instructions](https://docs.ghost.org/v1/docs/working-with-ghost)
-- [Admin Client development guide](https://docs.ghost.org/v1/docs/working-with-the-admin-client)
-
-
-# Staying Up to Date
-
-When a new version of Ghost comes out, you'll want to look over these [upgrade instructions](https://docs.ghost.org/v1/docs/upgrade) for what to do next.
-
-You can talk to other Ghost users and developers in our [forum](https://forum.ghost.org/) (it's pretty awesome).
-
-New releases are announced on the [dev blog](http://dev.ghost.org/tag/releases/). You can subscribe by email or follow [@TryGhost_Dev](https://twitter.com/tryghost_dev) on Twitter, if you prefer your updates bite-sized and facetious. :saxophone::turtle:
+For anyone wishing to contribute to Ghost or to hack/customise core files we recommend following our full development setup guides: [General Contributor Guide](https://ghost.org/docs/concepts/contributing/) | [Developer Setup Instructions](https://ghost.org/docs/install/source/) | [Admin Client development guide](https://ghost.org/docs/install/source/#ghost-admin)
 
 &nbsp;
 
 
 # Copyright & License
 
-Copyright (c) 2013-2018 Ghost Foundation - Released under the [MIT license](LICENSE). Ghost and the Ghost Logo are trademarks of Ghost Foundation Ltd. Please see our [trademark policy](https://ghost.org/trademark/) for info on acceptable usage.
+Copyright (c) 2013-2020 Ghost Foundation - Released under the [MIT license](LICENSE). Ghost and the Ghost Logo are trademarks of Ghost Foundation Ltd. Please see our [trademark policy](https://ghost.org/trademark/) for info on acceptable usage.

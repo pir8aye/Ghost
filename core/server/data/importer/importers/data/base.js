@@ -19,15 +19,9 @@ class Base {
             showNotFoundWarning: true
         };
 
-        this.legacyKeys = {};
-        this.legacyMapper = (item) => {
-            return _.mapKeys(item, (value, key) => {
-                return this.legacyKeys[key] || key;
-            });
-        };
-
         this.dataKeyToImport = options.dataKeyToImport;
         this.dataToImport = _.cloneDeep(allDataFromFile[this.dataKeyToImport] || []);
+        this.originalIdMap = {};
 
         this.importedDataToReturn = [];
         this.importedData = [];
@@ -60,7 +54,7 @@ class Base {
     }
 
     /**
-     * Never ever import these attributes!
+     * Strips attributes of the object
      */
     stripProperties(properties) {
         _.each(this.dataToImport, (obj) => {
@@ -93,7 +87,13 @@ class Base {
 
     generateIdentifier() {
         _.each(this.dataToImport, (obj) => {
-            obj.id = ObjectId.generate();
+            const newId = ObjectId.generate();
+
+            if (obj.id) {
+                this.originalIdMap[newId] = obj.id;
+            }
+
+            obj.id = newId;
         });
     }
 
@@ -102,7 +102,6 @@ class Base {
     }
 
     beforeImport() {
-        this.stripProperties(['id']);
         this.sanitizeValues();
         this.generateIdentifier();
         return Promise.resolve();
@@ -190,12 +189,17 @@ class Base {
         let userReferenceProblems = {};
 
         const handleObject = (obj, key) => {
-            if (!obj.hasOwnProperty(key)) {
+            if (!Object.prototype.hasOwnProperty.call(obj, key)) {
                 return;
             }
 
             // CASE: you import null, fallback to owner
             if (!obj[key]) {
+                // Exception: If the imported post is a draft published_by will be null. Not a userReferenceProblem.
+                if (key === 'published_by' && obj.status === 'draft') {
+                    return;
+                }
+
                 if (!userReferenceProblems[obj.id]) {
                     userReferenceProblems[obj.id] = {obj: _.cloneDeep(obj), keys: []};
                 }
@@ -274,6 +278,9 @@ class Base {
             }
         };
 
+        /**
+         * @deprecated: x_by fields (https://github.com/TryGhost/Ghost/issues/10286)
+         */
         // Iterate over all possible user relations
         _.each(this.dataToImport, (obj) => {
             _.each([
@@ -301,7 +308,7 @@ class Base {
 
         let ops = [];
 
-        _.each(this.dataToImport, (obj) => {
+        _.each(this.dataToImport, (obj, index) => {
             ops.push(() => {
                 return models[this.modelName].add(obj, options)
                     .then((importedModel) => {
@@ -316,12 +323,14 @@ class Base {
                         // for identifier lookup
                         this.importedData.push({
                             id: importedModel.id,
+                            originalId: this.originalIdMap[importedModel.id],
                             slug: importedModel.get('slug'),
                             originalSlug: obj.slug,
                             email: importedModel.get('email')
                         });
 
-                        return importedModel;
+                        importedModel = null;
+                        this.dataToImport.splice(index, 1);
                     })
                     .catch((err) => {
                         return this.handleError(err, obj);
@@ -337,7 +346,11 @@ class Base {
          *
          *       Promise.map(.., {concurrency: Int}) was not really improving the end performance for me.
          */
-        return sequence(ops);
+        return sequence(ops).then((response) => {
+            this.dataToImport = null;
+            ops = null;
+            return response;
+        });
     }
 }
 

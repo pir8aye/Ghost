@@ -1,8 +1,10 @@
 var _ = require('lodash'),
     Promise = require('bluebird'),
+    semver = require('semver'),
+    common = require('../../../../lib/common'),
+    debug = require('ghost-ignition').debug('importer:data'),
     sequence = require('../../../../lib/promise/sequence'),
     models = require('../../../../models'),
-    SubscribersImporter = require('./subscribers'),
     PostsImporter = require('./posts'),
     TagsImporter = require('./tags'),
     SettingsImporter = require('./settings'),
@@ -23,7 +25,6 @@ DataImporter = {
         importers.users = new UsersImporter(importData.data);
         importers.roles = new RolesImporter(importData.data);
         importers.tags = new TagsImporter(importData.data);
-        importers.subscribers = new SubscribersImporter(importData.data);
         importers.posts = new PostsImporter(importData.data);
         importers.settings = new SettingsImporter(importData.data);
 
@@ -41,12 +42,35 @@ DataImporter = {
             }
         };
 
-        if (!importOptions.hasOwnProperty('returnImportedData')) {
+        if (!Object.prototype.hasOwnProperty.call(importOptions, 'returnImportedData')) {
             importOptions.returnImportedData = false;
         }
 
         if (importOptions.importPersistUser) {
             modelOptions.importPersistUser = importOptions.importPersistUser;
+        }
+
+        if (!importData.meta) {
+            return Promise.reject(new common.errors.IncorrectUsageError({
+                message: 'Wrong importer structure. `meta` is missing.',
+                help: 'https://ghost.org/docs/api/migration/#json-file-structure'
+            }));
+        }
+
+        if (!importData.meta.version) {
+            return Promise.reject(new common.errors.IncorrectUsageError({
+                message: 'Wrong importer structure. `meta.version` is missing.',
+                help: 'https://ghost.org/docs/api/migration/#json-file-structure'
+            }));
+        }
+
+        // CASE: We deny LTS imports, because these are major version jumps. Only imports from v1 until the latest are supported.
+        //       We can detect a wrong structure by checking the meta version field. Ghost v0 doesn't use semver compliant versions.
+        if (!semver.valid(importData.meta.version)) {
+            return Promise.reject(new common.errors.IncorrectUsageError({
+                message: 'Detected unsupported file structure.',
+                help: 'Please install Ghost 1.0, import the file and then update your blog to the latest Ghost version.\nVisit https://ghost.org/update/?v=0.1 or ask for help in our https://forum.ghost.org.'
+            }));
         }
 
         this.init(importData);
@@ -120,7 +144,13 @@ DataImporter = {
 
             return toReturn;
         }).catch(function (errors) {
+            debug(errors);
             return Promise.reject(errors);
+        }).finally(() => {
+            // release memory
+            importers = {};
+            results = null;
+            importData = null;
         });
     }
 };
